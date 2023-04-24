@@ -1,0 +1,14 @@
+{ 
+    "builds": [ 
+        { 
+            "src": "scrap_website/website/app.py", 
+            "use": "@vercel/python" 
+        } 
+    ], 
+    "routes": [ 
+        { 
+            "src": "/(.*)", 
+            "dest": "scrap_website/website/app.py" 
+        } 
+    ]
+}

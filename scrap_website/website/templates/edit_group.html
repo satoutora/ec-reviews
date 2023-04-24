@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <title>Crawl</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="/static/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="/static/assets/css/templatemo-cyborg-gaming.css">
+    <link rel="stylesheet" href="/static/assets/css/owl.css">
+    <link rel="stylesheet" href="/static/assets/css/animate.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+
+</head>
+
+<body>
+
+    <!-- ***** Preloader Start ***** -->
+    <div id="js-preloader" class="js-preloader">
+        <div class="preloader-inner">
+            <span class="dot"></span>
+            <div class="dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <a href="/" class="logo">
+                            <img src="/static/assets/images/logocrawl.png" alt="">
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="page-content">
+                    <!-- ***** Banner Start ***** -->
+                    <div class="main-banner">
+                        <input type="text" value="{{ group['group_name'] }}" name="group" id="group-name"
+                        style="width: fit-content; height: 60px; font-size: 40px; border-radius: 10px;">
+                        <br>
+                        <div style="display: flex; gap: 25%; align-items: center; margin-top: 15px;">
+                            <div class="main-button" onclick="updateGroup()" style="cursor: pointer;"><a> Update </a></div>
+                            <div class="main-button" style="cursor: pointer;"> <a href="/group/delete/{{ group['id_group'] }}"> Delete group </a> </div>
+                        </div>
+                    </div>
+                    <!-- ***** Banner End ***** -->
+
+                    <!-- ***** Most Popular Start ***** -->
+                    <div class="most-popular" style="margin-top: 0;">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="heading-section">
+                                    <h4><em>Products from</em> Shopee</h4>
+                                </div>
+                                <div class="row">
+                                    {% for product in list_shopee %}
+                                    <div class="col-lg-3 col-sm-6" data-id="{{ product['id_product'] }}">
+                                        <div style="text-align: center; margin-bottom: -35px;" class = "choose" id="choose-button"> 
+                                            <a 
+                                            style="font-size: 14px; background-color: #e75e8d; color: #fff; padding: 12px 30px; display: inline-block; border-radius: 25px; text-transform: capitalize; letter-spacing: 0.5px; transition: all .3s; position: relative; overflow: hidden; cursor: pointer;"> 
+                                            Choose to Remove 
+                                            </a> 
+                                        </div>
+
+                                        <div style="text-align: center; margin-bottom: -35px; display: none;" class = "unChoose" id="choose-button">
+                                            <a 
+                                            style="font-size: 14px; background-color: #2dff03; color: #fff; padding: 12px 30px; display: inline-block; border-radius: 25px; text-transform: capitalize; letter-spacing: 0.5px; transition: all .3s; position: relative; overflow: hidden; cursor: pointer;">
+                                            Choosed 
+                                            </a>
+                                        </div>
+
+                                        <div class="item">
+                                            <div style="color: yellow;"> <i class="fa fa-star"></i>{{product['total_rating']}} </div>
+                                            <img src="{{ product['product_img'] }}" alt="">
+                                            <h4
+                                                style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;">
+                                                {{ product['name'] }}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ***** Most Popular End ***** -->
+
+                    <!-- ***** Most Popular Start ***** -->
+                    <div class="most-popular">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="heading-section">
+                                    <h4><em>Products from</em> Lazada</h4>
+                                </div>
+                                <div class="row">
+                                    {% for product in list_lazada %}
+                                    <div class="col-lg-3 col-sm-6" data-id="{{ product['id_product'] }}">
+                                        <div style="text-align: center; margin-bottom: -35px;" class="choose" id="choose-button">
+                                            <a
+                                                style="font-size: 14px; background-color: #e75e8d; color: #fff; padding: 12px 30px; display: inline-block; border-radius: 25px; text-transform: capitalize; letter-spacing: 0.5px; transition: all .3s; position: relative; overflow: hidden; cursor: pointer;">
+                                                Choose to Remove
+                                            </a>
+                                        </div>
+                                    
+                                        <div style="text-align: center; margin-bottom: -35px; display: none;" class="unChoose" id="choose-button">
+                                            <a
+                                                style="font-size: 14px; background-color: #2dff03; color: #fff; padding: 12px 30px; display: inline-block; border-radius: 25px; text-transform: capitalize; letter-spacing: 0.5px; transition: all .3s; position: relative; overflow: hidden; cursor: pointer;">
+                                                Choosed
+                                            </a>
+                                        </div>
+                                        <div class="item">
+                                            <i class="fa fa-star"></i>{{product['total_rating']}}
+                                            <img src="{{product['product_img']}}" alt="">
+                                            <h4
+                                                style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;">
+                                                {{product['name']}}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ***** Most Popular End ***** -->
+
+                    <!-- ***** Most Popular Start ***** -->
+                    <div class="most-popular">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="heading-section">
+                                    <h4><em>Products from</em> Tiki</h4>
+                                </div>
+                                <div class="row">
+                                    {% for product in list_tiki %}
+                                    <div class="col-lg-3 col-sm-6" data-id="{{ product['id_product'] }}">
+                                        <div style="text-align: center; margin-bottom: -35px;" class="choose" id="choose-button">
+                                            <a
+                                                style="font-size: 14px; background-color: #e75e8d; color: #fff; padding: 12px 30px; display: inline-block; border-radius: 25px; text-transform: capitalize; letter-spacing: 0.5px; transition: all .3s; position: relative; overflow: hidden; cursor: pointer;">
+                                                Choose to Remove
+                                            </a>
+                                        </div>
+                                    
+                                        <div style="text-align: center; margin-bottom: -35px; display: none;" class="unChoose" id="choose-button">
+                                            <a
+                                                style="font-size: 14px; background-color: #2dff03; color: #fff; padding: 12px 30px; display: inline-block; border-radius: 25px; text-transform: capitalize; letter-spacing: 0.5px; transition: all .3s; position: relative; overflow: hidden; cursor: pointer;">
+                                                Choosed
+                                            </a>
+                                        </div>
+                                        <div class="item">
+                                            <i class="fa fa-star"></i>{{product['total_rating']}}
+                                            <img src="{{product['product_img']}}" alt="">
+                                            <h4
+                                                style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;">
+                                                {{product['name']}}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ***** Most Popular End ***** -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+
+        </div>
+    </footer>
+
+
+    <!-- Scripts -->
+    <!-- Bootstrap core JavaScript -->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="/static/assets/js/isotope.min.js"></script>
+    <script src="/static/assets/js/owl-carousel.js"></script>
+    <script src="/static/assets/js/tabs.js"></script>
+    <script src="/static/assets/js/popup.js"></script>
+    <script src="/static/assets/js/custom.js?v=0.1"></script>
+
+    <script>
+        let list_product_id = [];
+        const buttons = document.querySelectorAll("#choose-button");
+        
+        buttons.forEach( (button) => {
+            button.addEventListener( "click", (e) => {
+                const btn = e.target;
+                const el = btn.parentElement;
+                const parent = el.parentElement;
+                const id = parent.getAttribute("data-id");
+                
+                if (el.classList.contains("choose")) {
+                    list_product_id.push(id);
+                    const next = el.nextElementSibling;
+                    el.style.display = "none";
+                    next.style.display = "block";
+                } else {
+                    list_product_id = list_product_id.filter(data => data !== id);
+                    const pre = el.previousElementSibling;
+                    el.style.display = "none";
+                    pre.style.display = "block";
+                }
+            });
+        });
+
+        function updateGroup() {
+            let grName = document.getElementById("group-name").value;
+            console.log(list_product_id);
+            $.ajax ({
+                url:"{{ url_for('editGroup', id_group=group['id_group'] ) }}",
+                type: 'POST',
+                data: {
+                    group_name : grName,
+                    list_remove : JSON.stringify(list_product_id)
+                },
+                success: function (response) {
+                    window.location = response; 
+                }
+            })
+        }
+
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <title>Crawl</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="/static/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="/static/assets/css/templatemo-cyborg-gaming.css">
+    <link rel="stylesheet" href="/static/assets/css/owl.css">
+    <link rel="stylesheet" href="/static/assets/css/animate.css">
+    <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+
+  </head>
+
+<body>
+
+  <!-- ***** Preloader Start ***** -->
+  <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+  <!-- ***** Preloader End ***** -->
+
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area header-sticky">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+                    <a href="/" class="logo">
+                        <img src="/static/assets/images/logocrawl.png" alt="">
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </div>
+  </header>
+  <!-- ***** Header Area End ***** -->
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="page-content">
+
+          <!-- ***** Banner Start ***** -->
+          <div>
+            <form method="POST" enctype="multipart/form-data" action="{{ url_for('addNewGroup') }}">
+              <div>
+                <h1 style="color: rgb(255, 99, 99); font-size: 25px; margin-bottom: 5px;"> Add new group product </h1>
+                <input type="text" placeholder="Enter group name" name="group" style="width: 40%; border-radius: 10px;">
+                <button
+                  style="border-radius: 15px; width: 10%; background-color: rgb(154, 208, 255); color: #fff;">
+                  Add
+                </button>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages %}
+                    {%for category, message in messages %}
+                      {% if category == 'error' %}
+                      <p style="color: red;">
+                        *{{ message }}
+                      </p>
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
+              </div>
+              <br>        
+            </form>
+          </div>
+          <!-- ***** Banner End ***** -->
+
+          <!-- ***** Gaming Library Start ***** -->
+          <div class="gaming-library profile-library">
+            <div class="col-lg-12">
+              <div class="heading-section">
+                <h4>Group Products</h4>
+              </div>
+              
+              {% for group in list_group %}
+              <div class="item" style="border-bottom: 1px solid #ffffff;">
+                <ul style="width: 100%;">
+                  <li style="width: 40%;"><span style="color: rgb(127, 197, 255);">Name </span>
+                    <p style="color: rgb(88, 255, 82);">{{ group['group_name'] }}</p>
+                  </li>
+                  <li style="width: 20%;"><span style="color: rgb(127, 197, 255);">Date create</span>
+                    <p style="color: rgb(88, 255, 82);">{{ group['create'] }}</p>
+                  </li>
+                  <li style="width: 20%;"><span style="color: rgb(127, 197, 255);">Last update</span>
+                    <p style="color: rgb(88, 255, 82);">{{ group['modified'] }}</p>
+                  </li>
+                  <li style="width: 10%;">
+                    <div class="main-border-button"><a href="/group/{{group['id_group']}}">Detail</a></div>
+                  </li>
+                </ul> <br>
+              </div>
+              {% endfor %}
+            </div>
+            
+          </div>
+          <!-- ***** Gaming Library End ***** -->
+          <br>
+          <p style="color: rgb(225, 255, 73);"> *Update everyday at 3.00am </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <div class="container">
+    
+    </div>
+  </footer>
+
+
+  <!-- Scripts -->
+  <!-- Bootstrap core JavaScript -->
+  <script src="/static/vendor/jquery/jquery.min.js"></script>
+  <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+  <script src="/static/assets/js/isotope.min.js"></script>
+  <script src="/static/assets/js/owl-carousel.js"></script>
+  <script src="/static/assets/js/tabs.js"></script>
+  <script src="/static/assets/js/popup.js"></script>
+  <script src="/static/assets/js/custom.js?v=0.1"></script>
+
+
+  </body>
+
+</html>
