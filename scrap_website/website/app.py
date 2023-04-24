@@ -3,7 +3,6 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 from flask import Flask, redirect, url_for, render_template, request, flash
 from flask_paginate import Pagination, get_page_args
-from flask_caching import Cache
 
 from crawl_data_scrapy.lazada import single_product_lazada, simple_request_lazada, update_product_lazada
 from crawl_data_scrapy.shopee import single_product_shopee, update_product_shopee
@@ -17,7 +16,6 @@ import time, json
 from scrapy.crawler import CrawlerProcess
 
 app = Flask(__name__)
-cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
 
 
