@@ -94,7 +94,7 @@ class SimpleRequestLazada():
             session = requests.Session()
             response = session.get(url=api, headers=self.header)
             self.parse(response)
-            time.sleep(3)
+            time.sleep(5)
 
     def parse(self, response):
         # lazada

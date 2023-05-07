@@ -294,8 +294,8 @@ def getAllProductByGroup(id_group):
     }
     return list_product
 
-def getAllReviewByFilter(id_product, have_content, not_have_content, have_media, not_have_media, most_liked, list_star):
-    s = f"select * from `review` where ( `id_product` = {id_product} ) and (`review_content` != {have_content} or `review_content` = {not_have_content}) and (`rating_star` in {list_star}) {most_liked} ;"
+def getAllReviewByFilter(id_product, have_content, not_have_content, have_media, not_have_media, option_sort, list_star):
+    s = f"select * from `review` where ( `id_product` = {id_product} ) and (`review_content` != {have_content} or `review_content` = {not_have_content}) and (`rating_star` in {list_star}) {option_sort} ;"
     print(s)
     cursor.execute(s)
     data = cursor.fetchall()
@@ -332,7 +332,7 @@ def getAllReviewByFilter(id_product, have_content, not_have_content, have_media,
         if not_have_media == 1:
             if list_media == []:
                 list_review.append((review, list_media))
-        
+
     return list_review
 
 def reloadRepository():

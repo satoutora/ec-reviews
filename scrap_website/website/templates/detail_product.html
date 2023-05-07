@@ -115,7 +115,7 @@
                     </div>
                   </div>
               
-                  <div style="width: 20%;">
+                  <div style="width: 10%;">
                     <h1 style="font-size: 20px; margin-top: 5px; cursor: pointer;" id="filter-rating" onclick="showFilterRating()">
                       Rating </h1>
                     <div id="option-rating"
@@ -130,6 +130,19 @@
                       <label for="rating_star"> 4 <i class="fa fa-star"></i></label><br>
                       <input type="checkbox" id="rating_star" name="rating_star" value="5" {{ check_5s }}>
                       <label for="rating_star"> 5 <i class="fa fa-star"></i></label><br>
+                    </div>
+                  </div>
+
+                  <div style="width: 10%;">
+                    <h1 style="font-size: 20px; margin-top: 5px; cursor: pointer;" id="filter-sort" onclick="showFilterSort()">
+                      Sort by </h1>
+                    <div id="option-sort"
+                      style="background-color: rgb(207, 83, 83); position:absolute; border-radius: 10px; padding: 5px; margin-top: 5px; display: none;">
+                      <select name="choose-option-sort">
+                        <option value="most_liked" id="most_liked" name="most_liked" {{ select_most_like }}> most liked </option>
+                        <option value="newest" id="newest" name="newest" {{ select_newest }}> newest created </option>
+                        <option value="oldest" id="oldest" name="oldest" {{ select_oldest }}> oldest created </option>
+                      </select>
                     </div>
                   </div>
               
@@ -218,6 +231,18 @@
         function showFilterRating() {
           const option = document.querySelector('#option-rating');
           const btn = document.querySelector('#filter-rating')
+          if (option.style.display === 'none') {
+            option.style.display = 'block';
+            btn.style.color = 'black';
+          } else {
+            option.style.display = 'none';
+            btn.style.color = 'white';
+          }
+        }
+
+        function showFilterSort() {
+          const option = document.querySelector('#option-sort');
+          const btn = document.querySelector('#filter-sort')
           if (option.style.display === 'none') {
             option.style.display = 'block';
             btn.style.color = 'black';

@@ -100,7 +100,8 @@ class UpdateProductLazada():
                     repository.saveReview(review, list_media)
                     repository.updateModifyProduct(self.product['id_product'])
                 page = page + 1
-                time.sleep(3)
+                time.sleep(5)
+                if page > 10: exit()
             except BaseException as e:
                 print(e)
                 exit()

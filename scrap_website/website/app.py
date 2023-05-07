@@ -111,6 +111,8 @@ def getAllReview(id_group):
     source_list_product = list_product
     check_have_content = check_not_have_content = check_have_media = check_not_have_media = 'checked'
     check_1s = check_2s = check_3s = check_4s = check_5s = 'checked'
+    select_most_like = 'selected'
+    select_newest = select_oldest = ''
 
     if request.method == 'POST':
         try:
@@ -119,7 +121,18 @@ def getAllReview(id_group):
             not_have_content = "''" if request.form.get('not_have_content') == '1' else "null"
             have_media = 1 if request.form.get('have_media') == '1' else 0
             not_have_media = 1 if request.form.get('not_have_media') == '1' else 0
-            most_liked = "order by agree_count desc"
+
+            option_sort = request.form.get('choose-option-sort')
+            if option_sort == 'most_liked':
+                option_sort = 'order by agree_count desc'
+                select_most_like = 'selected'
+            elif option_sort == 'newest':
+                option_sort = 'order by review_create_date desc'
+                select_newest = 'selected'
+            else:
+                option_sort = 'order by review_create_date asc'
+                select_oldest = 'selected'
+
             rating = request.form.getlist('rating_star')
             list_star = '('
             for st in rating:
@@ -129,7 +142,7 @@ def getAllReview(id_group):
             new_list_product = []
             for product in source_list_product:
                 if str(product['id_product']) in list_id_product:
-                    n_list_review = repository.getAllReviewByFilter(product['id_product'], have_content, not_have_content, have_media, not_have_media, most_liked, list_star)
+                    n_list_review = repository.getAllReviewByFilter(product['id_product'], have_content, not_have_content, have_media, not_have_media, option_sort, list_star)
                     product['list_review'] = n_list_review
                     new_list_product.append(product)
                 else:
@@ -163,7 +176,10 @@ def getAllReview(id_group):
                            check_2s=check_2s,
                            check_3s=check_3s,
                            check_4s=check_4s,
-                           check_5s=check_5s)
+                           check_5s=check_5s,
+                           select_most_like=select_most_like,
+                           select_newest=select_newest,
+                           select_oldest=select_oldest)
 
 
 @app.route("/crawl/<int:id_group>", methods=['POST', 'GET'])
@@ -271,14 +287,15 @@ def crawl(id_group):
     return redirect(url_for('group', id_group=id_group))
 
 
-@app.route("/group/<int:id_group>/detail/<int:id_product>",
-           methods=['POST', 'GET'])
+@app.route("/group/<int:id_group>/detail/<int:id_product>",methods=['POST', 'GET'])
 def detailProduct(id_group, id_product):
     product = repository.getProductById(id_product)
     list_review = repository.getAllReviewAndMediaByProduct(id_product)
 
     check_have_content = check_not_have_content = check_have_media = check_not_have_media = 'checked'
     check_1s = check_2s = check_3s = check_4s = check_5s = 'checked'
+    select_most_like = 'selected'
+    select_newest = select_oldest = ''
 
     if request.method == 'POST':
         try:
@@ -286,13 +303,14 @@ def detailProduct(id_group, id_product):
             not_have_content = "''" if request.form.get('not_have_content') == '1' else "null"
             have_media = 1 if request.form.get('have_media') == '1' else 0
             not_have_media = 1 if request.form.get('not_have_media') == '1' else 0
-            most_liked = "order by agree_count desc"
+            option_sort = request.form.get('choose-option-sort')
             rating = request.form.getlist('rating_star')
             list_star = '('
             for st in rating:
                 list_star = list_star + str(st) + ','
             list_star = list_star[:len(list_star) - 1] + ')'
-            print(have_content, not_have_content, have_media, not_have_media)
+
+            print(have_content, not_have_content, have_media, not_have_media, option_sort)
             return redirect(
                 url_for('detailProductByFilter', id_group=id_group,
                                                 id_product=id_product,
@@ -300,7 +318,8 @@ def detailProduct(id_group, id_product):
                                                 not_have_content=not_have_content,
                                                 have_media=have_media,
                                                 not_have_media=not_have_media,
-                                                list_star=list_star))
+                                                list_star=list_star,
+                                                option_sort=option_sort))
 
         except BaseException as e:
             print(e)
@@ -327,38 +346,54 @@ def detailProduct(id_group, id_product):
                            check_2s=check_2s,
                            check_3s=check_3s,
                            check_4s=check_4s,
-                           check_5s=check_5s)
+                           check_5s=check_5s,
+                           select_most_like=select_most_like,
+                           select_newest=select_newest,
+                           select_oldest=select_oldest)
 
 
-@app.route("/group/<int:id_group>/detail/<int:id_product>/filter/<have_content>/<not_have_content>/<int:have_media>/<int:not_have_media>/<list_star>",
-    methods=['POST', 'GET'])
-def detailProductByFilter(id_group, id_product, have_content, not_have_content, have_media, not_have_media, list_star):
+@app.route("/group/<int:id_group>/detail/<int:id_product>/filter/<have_content>/<not_have_content>/<int:have_media>/<int:not_have_media>/<list_star>/<option_sort>", methods=['POST', 'GET'])
+def detailProductByFilter(id_group, id_product, have_content, not_have_content, have_media, not_have_media, list_star, option_sort):
     product = repository.getProductById(id_product)
 
-    most_liked = "order by agree_count desc"
+    select_most_like = 'selected'
+    select_newest = select_oldest = ''
+
+    if option_sort == 'most_liked':
+        option_sort = 'order by agree_count desc'
+        select_most_like = 'selected'
+    elif option_sort == 'newest':
+        option_sort = 'order by review_create_date desc'
+        select_newest = 'selected'
+    else:
+        option_sort = 'order by review_create_date asc'
+        select_oldest = 'selected'
 
     list_review = repository.getAllReviewByFilter(
                         id_product, have_content, not_have_content,
-                        have_media, not_have_media, most_liked, list_star)
+                        have_media, not_have_media, option_sort, list_star)
 
     if request.method == 'POST':
         have_content = "''" if request.form.get('have_content') == '1' else "null"
         not_have_content = "''" if request.form.get('not_have_content') == '1' else "null"
         have_media = 1 if request.form.get('have_media') == '1' else 0
         not_have_media = 1 if request.form.get('not_have_media') == '1' else 0
+        option_sort = request.form.get('choose-option-sort')
         rating = request.form.getlist('rating_star')
         list_star = '('
         for st in rating:
             list_star = list_star + str(st) + ','
         list_star = list_star[:len(list_star) - 1] + ')'
-        print(have_content, not_have_content, have_media, not_have_media)
+        print(have_content, not_have_content, have_media, not_have_media, option_sort)
         return redirect(
-            url_for('detailProductByFilter', id_product=id_product,
+            url_for('detailProductByFilter', id_group=id_group,
+                                            id_product=id_product,
                                             have_content=have_content,
                                             not_have_content=not_have_content,
                                             have_media=have_media,
                                             not_have_media=not_have_media,
-                                            list_star=list_star))
+                                            list_star=list_star,
+                                            option_sort=option_sort))
 
     check_have_content = check_not_have_content = check_have_media = check_not_have_media = 'checked'
     check_1s = check_2s = check_3s = check_4s = check_5s = 'checked'
@@ -394,25 +429,46 @@ def detailProductByFilter(id_group, id_product, have_content, not_have_content, 
                            check_2s=check_2s,
                            check_3s=check_3s,
                            check_4s=check_4s,
-                           check_5s=check_5s)
+                           check_5s=check_5s,
+                           select_most_like=select_most_like,
+                           select_newest=select_newest,
+                           select_oldest=select_oldest)
 
 
 def updateAll():
-    list_shopee = repository.getAllProductBySource("shopee")
-    list_lazada = repository.getAllProductBySource("lazada")
-    list_tiki = repository.getAllProductBySource("tiki")
-    print(f"schedule is running lazada")
-    for lazada_product in list_lazada:
-        update_product_lazada.UpdateProductLazada(product=lazada_product).start_requests()
-    repository.reloadRepository()
-    print(f"schedule is running tiki")
-    for tiki_product in list_tiki:
-        update_product_tiki.UpdateProductTiki(product=tiki_product).start_requests()
-    repository.reloadRepository()
-    print(f"schedule is running shopee")
-    for shopee_product in list_shopee:
-        update_product_shopee.startProcess(shopee_product)
-    repository.reloadRepository()
+    try:
+        list_shopee = repository.getAllProductBySource("shopee")
+        list_lazada = repository.getAllProductBySource("lazada")
+        list_tiki = repository.getAllProductBySource("tiki")
+        
+        print(f"schedule is running tiki")
+        try:
+            for tiki_product in list_tiki:
+                print(tiki_product['id_product'])
+                update_product_tiki.UpdateProductTiki(product=tiki_product).start_requests()
+        except BaseException as e:
+            print(e)
+        
+        print(f"schedule is running shopee")
+        try:
+            for shopee_product in list_shopee:
+                print(shopee_product['id_product'])
+                update_product_shopee.startProcess(shopee_product)
+        except BaseException as e:
+            print(e)
+            
+        print(f"schedule is running lazada")
+        try:
+            for lazada_product in list_lazada:
+                print(lazada_product['id_product'])
+                update_product_lazada.UpdateProductLazada(product=lazada_product).start_requests()
+        except BaseException as e:
+            print(e)
+            
+        repository.reloadRepository()
+    except BaseException as e:
+        print(e)
+        print('stop model update')
 
 
 scheduler = BackgroundScheduler()
